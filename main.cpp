@@ -2,10 +2,10 @@
 
 int main()
 {
-    MyClass myObject;
-    myObject.readFile("input.txt");
-    myObject.reverseNames();
-    myObject.writeToFile("output.txt");
+  MyClass myObject;
+  myObject.readFile("input.txt");
+  myObject.reverseNames();
+  myObject.writeToFile("output.txt");
 
-    return 0;
+  return 0;
 }

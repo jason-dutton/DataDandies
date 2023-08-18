@@ -5,7 +5,11 @@ main.o: *.cpp
 	g++ -c main.cpp
 
 run : main
-	./main -h
+	./main
+
+check : main
+
+distcheck : main
 
 clean:
 	rm main.o main
