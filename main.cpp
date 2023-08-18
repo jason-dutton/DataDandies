@@ -1,4 +1,4 @@
-#include "myclass.h"
+#include "Classes/myClass.hpp"
 
 int main()
 {

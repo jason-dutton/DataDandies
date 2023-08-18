@@ -1,7 +1,23 @@
-#include "myclass.h"
-#include <iostream>
+#ifndef MYCLASS
+#define MYCLASS
+
+#include <string>
+#include <vector>
 #include <fstream>
 #include <algorithm>
+#include <iostream>
+
+class MyClass
+{
+public:
+    void readFile(const std::string &filename);
+    void reverseNames();
+    void writeToFile(const std::string &filename) const;
+    void printNames() const;
+
+private:
+    std::vector<std::string> names;
+};
 
 void MyClass::readFile(const std::string &filename)
 {
@@ -53,3 +69,5 @@ void MyClass::printNames() const
         std::cout << name << std::endl;
     }
 }
+
+#endif
