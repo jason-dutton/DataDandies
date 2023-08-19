@@ -106,8 +106,6 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
         chromosome.choices.push_back(choice);
     }
 
-    cout << "Random specimen: " << chromosome.choices.size() << endl;
-
     return Specimen(chromosome);
 }
 
@@ -123,15 +121,13 @@ Population::Population(int population_size, deque<Position> problem)
     {
         this->specimens.push_back(Specimen::randomSpecimen(this->problem));
     }
-
-    cout << "Population size: " << this->specimens.size() << endl;
 }
 
 void Population::cull(float survival_rate)
 {
     // Sort specimens by fitness
     sort(specimens.begin(), specimens.end(), [](Specimen a, Specimen b)
-         { return a.getFitness() > b.getFitness(); });
+         { return a.getFitness() < b.getFitness(); });
 
     // Remove the worst specimens
     int number_of_specimens_to_remove = (int)(specimens.size() * (1 - survival_rate));
@@ -243,10 +239,10 @@ public:
         auto end_time = std::chrono::high_resolution_clock::now();
         long elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 
-        best_fitness = max(best_fitness, population.specimens[0].getFitness());
+        best_fitness = population.specimens[0].getFitness();
         
         // Return best specimen
-        return Solution(problem, population.specimens[0].chromosome, best_fitness, elapsed_time);
+        return Solution(problem, population.specimens[0].chromosome, elapsed_time, best_fitness);
     }
 };
 #endif
