@@ -32,7 +32,7 @@ void MyClass::readFile(const std::string &filename)
     return;
   }
 
-  deque<tuple<int, int>> pairDeque;
+  deque<tuple<int, int>> tupleDeque;
 
   char openingParenthesis, comma, closingParenthesis;
   int x, y;
@@ -48,7 +48,7 @@ void MyClass::readFile(const std::string &filename)
       int x = std::atoi(line.substr(startPos + 1, commaPos1 - startPos - 1).c_str());
       int y = std::atoi(line.substr(commaPos1 + 1, closingPos - commaPos1).c_str());
 
-      pairDeque.emplace_back(x, y);
+      tupleDeque.emplace_back(x, y);
 
       startPos = line.find('(', closingPos);
   }
