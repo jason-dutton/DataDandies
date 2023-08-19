@@ -11,7 +11,7 @@
 
 const float SURVIVAL_RATE = 0.5;
 const float CROSSOVER_RATE = 0.4;
-const float MUTATION_RATE = 0.4;
+const float MUTATION_RATE = 0.6;
 const float MUTATION_FOOD_RATE = 0.6;
 const float MUTATION_FOOD_STD = 1;
 const int POPULATION_SIZE = 10000;
@@ -54,6 +54,8 @@ Specimen::Specimen(Chromosome chromosome, float fitness)
 
 void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutation_food_std)
 {
+    srand(time(NULL));
+    
     // randomly swap choices
     for (Choice choice : this->chromosome.choices)
     {
@@ -85,7 +87,6 @@ void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutat
 
 float Specimen::getFitness()
 {
-
     // set the amount of food as the food needed to complete the route to next
 
     Position current_position = Position(0, 0);
@@ -96,11 +97,7 @@ float Specimen::getFitness()
         
         int food_needed = distance / 10;
 
-        cout << "food needed: " << food_needed << ", " << choice.food << endl;
-
         choice.food = food_needed;
-
-        cout << "food needed: " << food_needed << ", " << choice.food << endl;
 
         current_position = choice.next;
     }
@@ -114,26 +111,28 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
     Chromosome chromosome = Chromosome();
 
-    for (Position position : problem)
-    {
-        Choice choice;
-        choice.food = rand() % 10;
-        choice.next = position;
-        chromosome.choices.push_back(choice);
-    }
-
-    // while (problem.size() > 0)
+    // for (Position position : problem)
     // {
     //     Choice choice;
     //     choice.food = rand() % 10;
-
-    //     // pick a number between 0 and problem.size() - 1
-    //     int next_index = rand() % problem.size();
-    //     choice.next = problem[next_index];
-    //     problem.erase(problem.begin() + next_index);
-
+    //     choice.next = position;
     //     chromosome.choices.push_back(choice);
     // }
+
+    srand(time(NULL));
+
+    while (problem.size() > 0)
+    {
+        Choice choice;
+        choice.food = rand() % 10;
+
+        // pick a number between 0 and problem.size() - 1
+        int next_index = rand() % problem.size();
+        choice.next = problem[next_index];
+        problem.erase(problem.begin() + next_index);
+
+        chromosome.choices.push_back(choice);
+    }
 
     return Specimen(chromosome);
 }
