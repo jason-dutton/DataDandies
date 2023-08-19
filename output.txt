@@ -1,6 +1,4 @@
-ecilA
-boB
-eilrahC
-divaD
-ammE
-anoiF
+[
+[10, [(1, 2), (3, 4)]],
+[30, [(5, 6)]],
+]

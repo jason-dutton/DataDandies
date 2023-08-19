@@ -59,7 +59,7 @@ inline void TextFileDataReader::writeChromosome(Chromosome c, const std::string 
       return;
   }
 
-  outputFile << "[ ";
+  outputFile << "[\n";
     for (size_t i = 0; i < c.choices.size(); ++i) {
         const Choice& choice = c.choices[i];
 
@@ -70,12 +70,12 @@ inline void TextFileDataReader::writeChromosome(Chromosome c, const std::string 
                        << "(" << nextChoice.next.x << ", " << nextChoice.next.y << ")]";
             ++i; // Skip the next choice
         } else {
-            outputFile << "[" << choice.next.x << ", " << choice.next.y << "]";
+            outputFile << "[(" << choice.next.x << ", " << choice.next.y << ")]";
         }
         outputFile << "]";
         
-        if (i < c.choices.size() - 1) {
-            outputFile << ", ";
+        if (i < c.choices.size()) {
+            outputFile << ",\n";
         }
     }
     outputFile << "]" << std::endl;
