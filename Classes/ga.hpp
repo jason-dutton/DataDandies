@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <iostream>
 
 #include "utils.hpp"
 
@@ -13,7 +14,7 @@ const float CROSSOVER_RATE = 0.4;
 const float MUTATION_RATE = 0.4;
 const float MUTATION_FOOD_RATE = 0.4;
 const float MUTATION_FOOD_STD = 0.4;
-const int POPULATION_SIZE = 100;
+const int POPULATION_SIZE = 10;
 const int MAX_GENERATIONS = 1000;
 
 class Specimen
@@ -94,7 +95,7 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
     Chromosome chromosome = Chromosome();
     
-    for (int i = 0; i < problem.size(); i++)
+    while (problem.size() > 0)
     {
         Choice choice;
         choice.food = rand() % 10;
@@ -106,6 +107,9 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
 
         chromosome.choices.push_back(choice);
     }
+
+    cout << "Random specimen: " << chromosome.choices.size() << endl;
+
     return Specimen(chromosome);
 }
 
@@ -116,10 +120,13 @@ Population::Population(int population_size, deque<Position> problem)
     this->problem = problem;
 
     this->population_size = population_size;
+
     for (int i = 0; i < population_size; i++)
     {
-        this->specimens.push_back(Specimen::randomSpecimen(problem));
+        this->specimens.push_back(Specimen::randomSpecimen(this->problem));
     }
+
+    cout << "Population size: " << this->specimens.size() << endl;
 }
 
 void Population::cull(float survival_rate)
@@ -135,48 +142,57 @@ void Population::cull(float survival_rate)
 
 void Population::crossover(float crossover_rate)
 {
-    // Find two random specimens
-    int specimen_1_index = rand() % specimens.size();
-    int specimen_2_index = rand() % specimens.size();
-    if (specimen_1_index == specimen_2_index)
-    {
-        specimen_2_index = (specimen_2_index + 1) % specimens.size();
+    // until we have enough new specimens, duplicate a random specimen and mutate it
+
+    while (specimens.size() < POPULATION_SIZE) {
+        int specimen_index = rand() % specimens.size();
+        Specimen specimen = specimens[specimen_index];
+        specimen.mutate();
+        specimens.push_back(specimen);
     }
 
-    Specimen specimen_1 = specimens[specimen_1_index];
-    Specimen specimen_2 = specimens[specimen_2_index];
+    // // Find two random specimens
+    // int specimen_1_index = rand() % specimens.size();
+    // int specimen_2_index = rand() % specimens.size();
+    // if (specimen_1_index == specimen_2_index)
+    // {
+    //     specimen_2_index = (specimen_2_index + 1) % specimens.size();
+    // }
 
-    // Generate new population from crossover
+    // Specimen specimen_1 = specimens[specimen_1_index];
+    // Specimen specimen_2 = specimens[specimen_2_index];
 
-    deque<Specimen> new_specimens;
+    // // Generate new population from crossover
 
-    for (int i = 0; i < POPULATION_SIZE / 2; i++)
-    {
-        Chromosome chromosome_1 = specimen_1.chromosome;
-        Chromosome chromosome_2 = specimen_2.chromosome;
+    // deque<Specimen> new_specimens;
 
-        // Crossover
+    // for (int i = 0; i < POPULATION_SIZE / 2; i++)
+    // {
+    //     Chromosome chromosome_1 = specimen_1.chromosome;
+    //     Chromosome chromosome_2 = specimen_2.chromosome;
 
-        for (int j = 0; j < problem.size(); j++)
-        {
-            if ((float)rand() / RAND_MAX < crossover_rate)
-            {
-                Choice old_value = chromosome_1.getAndSet(j, chromosome_2.get(j));
-                chromosome_2.getAndSet(j, old_value);
-            }
-        }
+    //     // Crossover
 
-        // Add new specimens to new population
+    //     for (int j = 0; j < problem.size(); j++)
+    //     {
+    //         if ((float)rand() / RAND_MAX < crossover_rate)
+    //         {
+    //             Choice old_value = chromosome_1.getAndSet(j, chromosome_2.get(j));
+    //             chromosome_2.getAndSet(j, old_value);
+    //         }
+    //     }
 
-        Specimen new_specimen_1 = Specimen(chromosome_1);
-        Specimen new_specimen_2 = Specimen(chromosome_2);
+    //     // Add new specimens to new population
 
-        new_specimens.push_back(new_specimen_1);
-        new_specimens.push_back(new_specimen_2);
-    }
+    //     Specimen new_specimen_1 = Specimen(chromosome_1);
+    //     Specimen new_specimen_2 = Specimen(chromosome_2);
 
-    // Replace old population with new population
-    specimens = new_specimens;
+    //     new_specimens.push_back(new_specimen_1);
+    //     new_specimens.push_back(new_specimen_2);
+    // }
+
+    // // Replace old population with new population
+    // specimens = new_specimens;
 }
 
 void Population::mutate(float mutation_rate)
@@ -189,13 +205,14 @@ void Population::mutate(float mutation_rate)
 
 class GeneticAlgorithm
 {
-    Population population;
+    Population population = Population(0);
     deque<Position> problem;
 
 public:
     GeneticAlgorithm(deque<Position> problem)
     {
         this->problem = problem;
+        this->population = Population(POPULATION_SIZE, problem);
     }
 
     Solution execute(int number_of_generations = MAX_GENERATIONS)
@@ -203,9 +220,6 @@ public:
         srand(time(NULL));
 
         auto start_time = std::chrono::high_resolution_clock::now();
-
-        // Initialize random population
-        this->population = Population(POPULATION_SIZE, problem);
 
         float best_fitness = 0;
 
@@ -218,10 +232,10 @@ public:
             best_fitness = max(best_fitness, population.specimens[0].getFitness());
 
             // Crossover
-            population.crossover();
+            // population.crossover();
 
             // Mutate
-            population.mutate();
+            // population.mutate();
         }
 
         // Sort specimens by fitness
