@@ -85,9 +85,7 @@ void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutat
 
 float Specimen::getFitness()
 {
-    //! Remove this line upon implementation of evaluate()
-    // this->fitness = this->chromosome.evaluate();
-    this->fitness = 0;
+    this->fitness = this->chromosome.fitness();
     return this->fitness;
 }
 
