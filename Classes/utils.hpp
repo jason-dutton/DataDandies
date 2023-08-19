@@ -24,7 +24,7 @@ class Chromosome
 {
 public:
     deque<Choice> choices;
-    int static totalDistance = 0;
+    int static totalDistance;
 
     void static setTotalDistance(int tD);
     int static getTotalDistance();
