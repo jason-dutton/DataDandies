@@ -32,9 +32,9 @@ public:
     void add(Choice choice);
     void remove(int index);
     int size();
+    double fitness();
 
 private:
-    double fitness();
     int calculateNotEnoughFoodPenalty();
     int calculateTravelledDistance();
     int calculatePackagesSent();
