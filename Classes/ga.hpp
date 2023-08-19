@@ -14,6 +14,7 @@ const float MUTATION_RATE = 0.4;
 const float MUTATION_FOOD_RATE = 0.4;
 const float MUTATION_FOOD_STD = 0.4;
 const int POPULATION_SIZE = 100;
+const int MAX_GENERATIONS = 100;
 
 class Specimen
 {
@@ -196,7 +197,7 @@ public:
         this->problem = problem;
     }
 
-    Solution execute(int number_of_generations = 100)
+    Solution execute(int number_of_generations = MAX_GENERATIONS)
     {
         srand(time(NULL));
 
