@@ -2,9 +2,7 @@
 #define TEXTFILEDATAREADER_HPP
 
 #include <string>
-#include <vector>
 #include <fstream>
-#include <algorithm>
 #include <iostream>
 #include <deque>
 #include <cstdlib>
@@ -27,6 +25,7 @@ deque<Position> TextFileDataReader::readFile(const std::string &filename)
     std::cerr << "Error opening file: " << filename << std::endl;
     return tupleDeque;
   }
+
 
   char openingParenthesis, comma, closingParenthesis;
   Position pos;
