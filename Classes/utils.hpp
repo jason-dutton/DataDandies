@@ -96,44 +96,11 @@ double Chromosome::fitness()
     double fitness = 0;
     double eqOne = (0.1 * totalDistance * ((calculateTravelledDistance() + 0.01) / totalDistance));
     // cout << "log EqOne: " << log(eqOne) << endl;
-    fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(1.1, calculateRecoveryMinutes()) + (10 / (1 + calculateWeightPenalty()));
-    // cout << "Fitness 1: " << fitness << endl;
+    fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(1.1, calculateRecoveryMinutes()) + (10.0 / (1 + calculateWeightPenalty()));
+    // cout << "Fitness = " << fitness << " - log(eq): " << log(eqOne) << " packages :" << pow(0.8, calculatePackagesSent()) << " recovery: " << pow(1.1, calculateRecoveryMinutes()) << " weight: " << (10 / (1 + calculateWeightPenalty())) << endl;
     fitness = pow(20, fitness);
-    // cout << "Fitness before penalty: " << fitness << ", penalty: " << calculateNotEnoughFoodPenalty() << endl;
-    // fitness -= calculateNotEnoughFoodPenalty();
-    // cout << "Fitness after penalty: " << fitness << endl;
+    // cout << "Fitness: " << fitness << endl;
     return fitness;
-}
-
-int Chromosome::calculateNotEnoughFoodPenalty()
-{
-    // calculate from 0 to first node
-    int penalty = 0;
-    int distance = choices[0].next.x + choices[0].next.y;
-    int requiredFood = distance / 10;
-    if (distance % 10 > 4)
-    {
-        requiredFood++;
-    }
-    if (choices[0].food < requiredFood)
-    {
-        penalty += requiredFood - choices[0].food;
-    }
-    // caculate for every subsequent node
-    for (int i = 1; i < choices.size(); i++)
-    {
-        distance = distanceInStep(i);
-        requiredFood = distance / 10;
-        if (distance % 10 > 4)
-        {
-            requiredFood++;
-        }
-        if (choices[i].food < requiredFood)
-        {
-            penalty += requiredFood - choices[i].food;
-        }
-    }
-    return penalty * 100;
 }
 
 /**
@@ -148,7 +115,6 @@ int Chromosome::calculateTravelledDistance()
     {
         travelledDist += abs(choices[i].next.x - choices[i + 1].next.x) + abs(choices[i].next.y - choices[i + 1].next.y);
     }
-    // cout << "Travelled distance: " << travelledDist << endl;
     return travelledDist;
 }
 
@@ -162,7 +128,6 @@ int Chromosome::calculatePackagesSent()
     {
         packagesSent += choices[i].food;
     }
-    // cout << "Packages sent: " << packagesSent << endl;
     return packagesSent;
 }
 
@@ -187,7 +152,6 @@ int Chromosome::calculateRecoveryMinutes()
             recoveryMinutes += recov;
         }
     }
-    // cout << "Recovery minutes: " << recoveryMinutes << endl;
     return recoveryMinutes;
 }
 
@@ -223,7 +187,7 @@ int Chromosome::calculateWeightPenalty()
             weightPenalty += i / 10;
         }
     }
-    // cout << "Weight penalty: " << weightPenalty << endl;
+    cout << "Weight penalty: " << weightPenalty << endl;
     return weightPenalty;
 }
 
