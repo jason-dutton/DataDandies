@@ -83,9 +83,9 @@ double Chromosome::fitness()
     double eqOne = (0.1 * totalDistance * ((calculateTravelledDistance() + 0.01) / totalDistance));
     fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(-1.1, calculateRecoveryMinutes()) + (10 / (1 + calculateWeightPenalty()));
     fitness = pow(20, fitness);
-    cout << "Fitness before penalty: " << fitness << endl;
+    // cout << "Fitness before penalty: " << fitness << endl;
     fitness -= calculateNotEnoughFoodPenalty();
-    cout << "Fitness after penalty: " << fitness << endl;
+    // cout << "Fitness after penalty: " << fitness << endl;
     return fitness;
 }
 
@@ -117,7 +117,7 @@ int Chromosome::calculateNotEnoughFoodPenalty()
             penalty += requiredFood - choices[i].food;
         }
     }
-    return penalty * 10;
+    return penalty * 100;
 }
 
 /**
