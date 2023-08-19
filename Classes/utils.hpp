@@ -3,6 +3,7 @@
 
 #include <deque>
 #include <cmath>
+#include <iostream>
 using namespace std;
 
 class Position
@@ -23,6 +24,7 @@ class Chromosome
 {
 public:
     deque<Choice> choices;
+    int static totalDistance;
 
     Choice getAndSet(int index, Choice choice);
     Choice get(int index);
@@ -32,7 +34,7 @@ public:
     int size();
 
 private:
-    double fitness(int totalDist);
+    double fitness();
     int calculateNotEnoughFoodPenalty();
     int calculateTravelledDistance();
     int calculatePackagesSent();
@@ -40,6 +42,8 @@ private:
     int distanceInStep(int index);
     int calculateWeightPenalty();
 };
+
+int Chromosome::totalDistance = 0;
 
 Choice Chromosome::getAndSet(int index, Choice choice)
 {
@@ -73,12 +77,16 @@ int Chromosome::size()
     return this->choices.size();
 }
 
-double Chromosome::fitness(int totalDist)
+double Chromosome::fitness()
 {
     double fitness = 0;
-    double eqOne = (0.1 * totalDist * ((calculateTravelledDistance() + 0.01) / totalDist));
+    double eqOne = (0.1 * totalDistance * ((calculateTravelledDistance() + 0.01) / totalDistance));
     fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(-1.1, calculateRecoveryMinutes()) + (10 / (1 + calculateWeightPenalty()));
     fitness = pow(20, fitness);
+    cout << "Fitness before penalty: " << fitness << endl;
+    fitness -= calculateNotEnoughFoodPenalty();
+    cout << "Fitness after penalty: " << fitness << endl;
+    return fitness;
 }
 
 int Chromosome::calculateNotEnoughFoodPenalty()
@@ -109,7 +117,7 @@ int Chromosome::calculateNotEnoughFoodPenalty()
             penalty += requiredFood - choices[i].food;
         }
     }
-    return penalty;
+    return penalty * 10;
 }
 
 /**
@@ -161,6 +169,7 @@ int Chromosome::calculateRecoveryMinutes()
             recoveryMinutes += recov;
         }
     }
+    return recoveryMinutes;
 }
 
 /**
