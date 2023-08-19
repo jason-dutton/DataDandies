@@ -85,7 +85,28 @@ void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutat
 
 float Specimen::getFitness()
 {
+
+    // set the amount of food as the food needed to complete the route to next
+
+    Position current_position = Position(0, 0);
+
+    for (Choice &choice : this->chromosome.choices)
+    {
+        int distance = abs(choice.next.x - current_position.x) + abs(choice.next.y - current_position.y);
+        
+        int food_needed = distance / 10;
+
+        cout << "food needed: " << food_needed << ", " << choice.food << endl;
+
+        choice.food = food_needed;
+
+        cout << "food needed: " << food_needed << ", " << choice.food << endl;
+
+        current_position = choice.next;
+    }
+
     this->fitness = this->chromosome.fitness();
+
     return this->fitness;
 }
 

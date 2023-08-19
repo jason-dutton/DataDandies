@@ -9,9 +9,23 @@ using namespace std;
 class Position
 {
 public:
+    Position();
+    Position(int x, int y);
     int x;
     int y;
 };
+
+Position::Position()
+{
+    this->x = 0;
+    this->y = 0;
+}
+
+Position::Position(int x, int y)
+{
+    this->x = x;
+    this->y = y;
+}
 
 class Choice
 {
@@ -117,7 +131,7 @@ int Chromosome::calculateNotEnoughFoodPenalty()
             penalty += requiredFood - choices[i].food;
         }
     }
-    return penalty * 1000;
+    return penalty * 100;
 }
 
 /**
