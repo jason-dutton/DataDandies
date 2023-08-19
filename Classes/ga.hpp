@@ -92,7 +92,7 @@ float Specimen::getFitness()
 Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
     Chromosome chromosome = Chromosome();
-    
+
     while (problem.size() > 0)
     {
         Choice choice;
@@ -138,7 +138,8 @@ void Population::crossover(float crossover_rate)
 {
     // until we have enough new specimens, duplicate a random specimen and mutate it
 
-    while (specimens.size() < POPULATION_SIZE) {
+    while (specimens.size() < POPULATION_SIZE)
+    {
         int specimen_index = rand() % specimens.size();
         Specimen specimen = specimens[specimen_index];
         specimen.mutate();
@@ -239,8 +240,8 @@ public:
         auto end_time = std::chrono::high_resolution_clock::now();
         long elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 
-        best_fitness = population.specimens[0].getFitness();
-        
+        best_fitness = max(best_fitness, population.specimens[0].getFitness());
+
         // Return best specimen
         return Solution(problem, population.specimens[0].chromosome, elapsed_time, best_fitness);
     }
