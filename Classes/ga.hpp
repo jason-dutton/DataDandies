@@ -14,8 +14,8 @@ const float CROSSOVER_RATE = 0.4;
 const float MUTATION_RATE = 0.4;
 const float MUTATION_FOOD_RATE = 0.4;
 const float MUTATION_FOOD_STD = 0.4;
-const int POPULATION_SIZE = 10;
-const int MAX_GENERATIONS = 1000;
+const int POPULATION_SIZE = 1000;
+const int MAX_GENERATIONS = 10000;
 
 class Specimen
 {
@@ -131,7 +131,7 @@ void Population::cull(float survival_rate)
 {
     // Sort specimens by fitness
     sort(specimens.begin(), specimens.end(), [](Specimen a, Specimen b)
-         { return a.getFitness() < b.getFitness(); });
+         { return a.getFitness() > b.getFitness(); });
 
     // Remove the worst specimens
     int number_of_specimens_to_remove = (int)(specimens.size() * (1 - survival_rate));
@@ -233,7 +233,7 @@ public:
             // population.crossover();
 
             // Mutate
-            // population.mutate();
+            population.mutate();
         }
 
         // Sort specimens by fitness
