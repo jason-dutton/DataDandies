@@ -196,6 +196,7 @@ public:
     GeneticAlgorithm(deque<Position> problem)
     {
         this->problem = problem;
+        
     }
 
     Solution execute(int number_of_generations = MAX_GENERATIONS)

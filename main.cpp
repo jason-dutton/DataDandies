@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
     output = argv[2];
   }
 
-
   TextFileDataReader fileHandler;
   deque<Position> problem = fileHandler.readFile(input);
 
@@ -34,7 +33,9 @@ int main(int argc, char *argv[])
   {
     cout << pos.x << " " << pos.y << endl;
   }
-  
+
+  int totalDistance = problem.back().x + problem.back().y;
+  Chromosome::setTotalDistance(totalDistance);
 
   GeneticAlgorithm ga = GeneticAlgorithm(problem);
   Solution solution = ga.execute();
