@@ -2,7 +2,6 @@
 
 #include "Classes/DataReader.hpp"
 #include "Classes/ga.hpp"
-#include "Classes/utils.hpp"
 
 using namespace std;
 

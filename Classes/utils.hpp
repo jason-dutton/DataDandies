@@ -24,7 +24,6 @@ class Chromosome
 public:
     deque<Choice> choices;
 
-    Chromosome();
     Choice getAndSet(int index, Choice choice);
     Choice get(int index);
     void set(int index, Choice choice);
@@ -215,6 +214,7 @@ Solution::Solution(deque<Position> problem, Chromosome chromosome, float time, f
     this->problem = problem;
     this->chromosome = chromosome;
     this->fitness = fitness;
+    this->time = time;
 }
 
 #endif // UTILS
