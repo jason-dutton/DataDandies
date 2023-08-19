@@ -48,5 +48,7 @@ int main(int argc, char *argv[])
   cout << "Fitness: " << solution.fitness << endl;
   cout << "Total time: " << solution.time << endl;
 
+  fileHandler.writeChromosome(solution.chromosome, output);
+
   return 0;
 }
