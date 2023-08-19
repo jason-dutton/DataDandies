@@ -3,12 +3,15 @@
 
 #include <deque>
 #include <algorithm>
+#include <random>
 
 #include "utils.hpp"
 
 const float SURVIVAL_RATE = 0.2;
 const float CROSSOVER_RATE = 0.4;
 const float MUTATION_RATE = 0.4;
+const float MUTATION_FOOD_RATE = 0.4;
+const float MUTATION_FOOD_STD = 0.4;
 const int POPULATION_SIZE = 100;
 
 class Specimen
@@ -19,7 +22,7 @@ public:
 
     Specimen(Chromosome chromosome, float fitness = 0);
 
-    void mutate(float mutation_rate = MUTATION_RATE);
+    void mutate(float mutation_rate = MUTATION_RATE, float mutation_food_rate = MUTATION_FOOD_RATE, float mutation_food_std = MUTATION_FOOD_STD);
     static Specimen randomSpecimen(deque<Position> problem);
     float getFitness();
 };
@@ -46,9 +49,35 @@ Specimen::Specimen(Chromosome chromosome, float fitness)
     this->fitness = fitness;
 }
 
-void Specimen::mutate(float mutation_rate)
+void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutation_food_std)
 {
-    // TODO
+    // randomly swap choices
+    for (Choice choice : this->chromosome.choices)
+    {
+        if (rand() % 100 < mutation_rate * 100)
+        {
+            // pick a number between 0 and problem.size() - 1
+            int next_index = rand() % this->chromosome.choices.size();
+            Choice next_choice = this->chromosome.choices[next_index];
+
+            this->chromosome.choices[next_index] = choice;
+            this->chromosome.choices.push_back(next_choice);
+        }
+    }
+
+    // randomly change the food value for each choice
+
+    for (Choice choice : this->chromosome.choices)
+    {
+        if (rand() % 100 < mutation_food_rate * 100)
+        {   
+            normal_distribution<double> normalDist(0, mutation_food_std);
+            default_random_engine generator;
+
+            double deltaFood = normalDist(generator);
+            choice.food += deltaFood;
+        }
+    }
 }
 
 float Specimen::getFitness()
