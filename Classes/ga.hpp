@@ -9,13 +9,13 @@
 
 #include "utils.hpp"
 
-const float SURVIVAL_RATE = 0.5;
+const float SURVIVAL_RATE = 0.4;
 const float CROSSOVER_RATE = 0.4;
-const float MUTATION_RATE = 0.6;
+const float MUTATION_RATE = 0.3;
 const float MUTATION_FOOD_RATE = 0.6;
 const float MUTATION_FOOD_STD = 1;
-const int POPULATION_SIZE = 10000;
-const int MAX_GENERATIONS = 10000;
+const int POPULATION_SIZE = 1000;
+const int MAX_GENERATIONS = 100000;
 
 class Specimen
 {
@@ -55,7 +55,7 @@ Specimen::Specimen(Chromosome chromosome, float fitness)
 void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutation_food_std)
 {
     srand(time(NULL));
-    
+
     // randomly swap choices
     for (Choice choice : this->chromosome.choices)
     {
@@ -141,6 +141,8 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
 
 Population::Population(int population_size, deque<Position> problem)
 {
+    srand(time(NULL));
+
     this->problem = problem;
 
     this->population_size = population_size;
@@ -155,7 +157,7 @@ void Population::cull(float survival_rate)
 {
     // Sort specimens by fitness
     sort(specimens.begin(), specimens.end(), [](Specimen a, Specimen b)
-         { return a.getFitness() < b.getFitness(); });
+         { return a.getFitness() > b.getFitness(); });
 
     // Remove the worst specimens
     int number_of_specimens_to_remove = (int)(specimens.size() * (1 - survival_rate));
@@ -263,7 +265,7 @@ public:
 
         // Sort specimens by fitness
         sort(population.specimens.begin(), population.specimens.end(), [](Specimen a, Specimen b)
-             { return a.getFitness() < b.getFitness(); });
+             { return a.getFitness() > b.getFitness(); });
 
         auto end_time = std::chrono::high_resolution_clock::now();
         long elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
