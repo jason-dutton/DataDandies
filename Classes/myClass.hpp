@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <iostream>
 #include <deque>
+#include <cstdlib>
+
+using namespace std;
 
 class MyClass
 {
@@ -29,10 +32,25 @@ void MyClass::readFile(const std::string &filename)
     return;
   }
 
-  std::string name;
-  while (std::getline(file, name))
-  {
-    names.push_back(name);
+  deque<tuple<int, int>> pairDeque;
+
+  char openingParenthesis, comma, closingParenthesis;
+  int x, y;
+
+  string line;
+  getline(file, line);
+
+  size_t startPos = line.find('(');
+  while (startPos != std::string::npos) {
+      size_t commaPos1 = line.find(',', startPos);
+      size_t closingPos = line.find(')', startPos);
+
+      int x = std::atoi(line.substr(startPos + 1, commaPos1 - startPos - 1).c_str());
+      int y = std::atoi(line.substr(commaPos1 + 1, closingPos - commaPos1).c_str());
+
+      pairDeque.emplace_back(x, y);
+
+      startPos = line.find('(', closingPos);
   }
 
   file.close();
