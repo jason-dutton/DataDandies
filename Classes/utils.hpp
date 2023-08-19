@@ -26,8 +26,6 @@ public:
     deque<Choice> choices;
     int static totalDistance;
 
-    void static setTotalDistance(int tD);
-    int static getTotalDistance();
     Choice getAndSet(int index, Choice choice);
     Choice get(int index);
     void set(int index, Choice choice);
@@ -45,15 +43,7 @@ private:
     int calculateWeightPenalty();
 };
 
-void Chromosome::setTotalDistance(int tD)
-{
-    totalDistance = tD;
-}
-
-int Chromosome::getTotalDistance()
-{
-    return totalDistance;
-}
+int Chromosome::totalDistance = 0;
 
 Choice Chromosome::getAndSet(int index, Choice choice)
 {
@@ -179,6 +169,7 @@ int Chromosome::calculateRecoveryMinutes()
             recoveryMinutes += recov;
         }
     }
+    return recoveryMinutes;
 }
 
 /**

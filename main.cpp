@@ -34,8 +34,8 @@ int main(int argc, char *argv[])
     cout << pos.x << " " << pos.y << endl;
   }
 
-  int totalDistance = problem.back().x + problem.back().y;
-  Chromosome::setTotalDistance(totalDistance);
+  int total = problem.back().x + problem.back().y;
+  Chromosome::totalDistance = total;
 
   GeneticAlgorithm ga = GeneticAlgorithm(problem);
   Solution solution = ga.execute();
