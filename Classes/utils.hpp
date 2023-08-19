@@ -117,7 +117,7 @@ int Chromosome::calculateNotEnoughFoodPenalty()
             penalty += requiredFood - choices[i].food;
         }
     }
-    return penalty * 100;
+    return penalty * 1000;
 }
 
 /**
@@ -190,7 +190,7 @@ int Chromosome::calculateWeightPenalty()
 {
     // calculate from 0 to first node
     int weightPenalty = 0;
-    int distance = choices[0].next.x - choices[0].next.y;
+    int distance = choices[0].next.x + choices[0].next.y;
     for (int i = 0; i < distance; i += 10)
     {
         weightPenalty++;

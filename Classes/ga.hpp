@@ -9,12 +9,12 @@
 
 #include "utils.hpp"
 
-const float SURVIVAL_RATE = 0.2;
+const float SURVIVAL_RATE = 0.5;
 const float CROSSOVER_RATE = 0.4;
 const float MUTATION_RATE = 0.4;
-const float MUTATION_FOOD_RATE = 0.4;
-const float MUTATION_FOOD_STD = 0.4;
-const int POPULATION_SIZE = 1000;
+const float MUTATION_FOOD_RATE = 0.6;
+const float MUTATION_FOOD_STD = 1;
+const int POPULATION_SIZE = 10000;
 const int MAX_GENERATIONS = 10000;
 
 class Specimen
@@ -93,18 +93,26 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
     Chromosome chromosome = Chromosome();
     
-    while (problem.size() > 0)
+    for (Position position : problem)
     {
         Choice choice;
         choice.food = rand() % 10;
-
-        // pick a number between 0 and problem.size() - 1
-        int next_index = rand() % problem.size();
-        choice.next = problem[next_index];
-        problem.erase(problem.begin() + next_index);
-
+        choice.next = position;
         chromosome.choices.push_back(choice);
     }
+
+    // while (problem.size() > 0)
+    // {
+    //     Choice choice;
+    //     choice.food = rand() % 10;
+
+    //     // pick a number between 0 and problem.size() - 1
+    //     int next_index = rand() % problem.size();
+    //     choice.next = problem[next_index];
+    //     problem.erase(problem.begin() + next_index);
+
+    //     chromosome.choices.push_back(choice);
+    // }
 
     return Specimen(chromosome);
 }
@@ -234,10 +242,12 @@ public:
 
         // Sort specimens by fitness
         sort(population.specimens.begin(), population.specimens.end(), [](Specimen a, Specimen b)
-             { return a.getFitness() > b.getFitness(); });
+             { return a.getFitness() < b.getFitness(); });
 
         auto end_time = std::chrono::high_resolution_clock::now();
         long elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+
+        cout << "Best Fitness Found: " << best_fitness << endl;
 
         best_fitness = population.specimens[0].getFitness();
         

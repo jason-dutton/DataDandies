@@ -1,5 +1,7 @@
 #include <string>
 
+#include <cmath>
+
 #include "Classes/DataReader.hpp"
 #include "Classes/ga.hpp"
 
