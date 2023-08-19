@@ -14,6 +14,7 @@ class TextFileDataReader
 {
 public:
   deque<Position> readFile(const std::string &filename);
+  void writeChromosome(Chromosome c, const std::string &filename);
 };
 
 deque<Position> TextFileDataReader::readFile(const std::string &filename)
@@ -50,5 +51,36 @@ deque<Position> TextFileDataReader::readFile(const std::string &filename)
 
   return tupleDeque;
 }
+inline void TextFileDataReader::writeChromosome(Chromosome c, const std::string &filename)
+{
+  std::ofstream outputFile("output.txt");
+  if (!outputFile.is_open()) {
+      std::cerr << "Error opening output file." << std::endl;
+      return;
+  }
 
+  outputFile << "[ ";
+    for (size_t i = 0; i < c.choices.size(); ++i) {
+        const Choice& choice = c.choices[i];
+
+        outputFile << "[" << choice.food << ", ";
+        if (i + 1 < c.choices.size() && c.choices[i + 1].food == 0) {
+            const Choice& nextChoice = c.choices[i + 1];
+            outputFile << "[(" << choice.next.x << ", " << choice.next.y << "), "
+                       << "(" << nextChoice.next.x << ", " << nextChoice.next.y << ")]";
+            ++i; // Skip the next choice
+        } else {
+            outputFile << "[" << choice.next.x << ", " << choice.next.y << "]";
+        }
+        outputFile << "]";
+        
+        if (i < c.choices.size() - 1) {
+            outputFile << ", ";
+        }
+    }
+    outputFile << "]" << std::endl;
+
+  outputFile.close();
+  return;
+}
 #endif
