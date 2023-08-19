@@ -113,7 +113,7 @@ float Specimen::getFitness()
 Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
     Chromosome chromosome = Chromosome();
-    
+
     for (Position position : problem)
     {
         Choice choice;
@@ -167,7 +167,8 @@ void Population::crossover(float crossover_rate)
 {
     // until we have enough new specimens, duplicate a random specimen and mutate it
 
-    while (specimens.size() < POPULATION_SIZE) {
+    while (specimens.size() < POPULATION_SIZE)
+    {
         int specimen_index = rand() % specimens.size();
         Specimen specimen = specimens[specimen_index];
         specimen.mutate();
@@ -270,8 +271,10 @@ public:
 
         cout << "Best Fitness Found: " << best_fitness << endl;
 
-        best_fitness = population.specimens[0].getFitness();
-        
+        cout << "Best Fitness Found: " << best_fitness << endl;
+
+        best_fitness = max(best_fitness, population.specimens[0].getFitness());
+
         // Return best specimen
         return Solution(problem, population.specimens[0].chromosome, elapsed_time, best_fitness);
     }
