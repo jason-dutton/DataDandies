@@ -92,11 +92,12 @@ float Specimen::getFitness()
 
 Specimen Specimen::randomSpecimen(deque<Position> problem)
 {
-    Chromosome chromosome;
+    Chromosome chromosome = Chromosome();
+    
     for (int i = 0; i < problem.size(); i++)
     {
         Choice choice;
-        choice.food = rand() % 2;
+        choice.food = rand() % 10;
 
         // pick a number between 0 and problem.size() - 1
         int next_index = rand() % problem.size();
