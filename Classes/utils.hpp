@@ -1,3 +1,6 @@
+#ifndef UTILS
+#define UTILS
+
 #include <deque>
 #include <cmath>
 using namespace std;
@@ -181,3 +184,5 @@ Solution::Solution(deque<Position> problem, Chromosome chromosome, float time, f
     this->chromosome = chromosome;
     this->fitness = fitness;
 }
+
+#endif // UTILS
