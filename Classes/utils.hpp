@@ -1,5 +1,6 @@
 #include <deque>
 using namespace std;
+
 class Position
 {
 public:
@@ -57,4 +58,21 @@ void Chromosome::remove(int index)
 int Chromosome::size()
 {
     return this->choices.size();
+}
+
+class Solution {
+public:
+    deque<Position> problem;
+    Chromosome chromosome;
+    float fitness;
+    float time;
+
+    Solution(deque<Position> problem, Chromosome chromosome, float time, float fitness = 0);
+};
+
+Solution::Solution(deque<Position> problem, Chromosome chromosome, float time, float fitness)
+{
+    this->problem = problem;
+    this->chromosome = chromosome;
+    this->fitness = fitness;
 }
