@@ -34,6 +34,7 @@ public:
 
 private:
     double fitness(int totalDist);
+    int calculateNotEnoughFoodPenalty();
     int calculateTravelledDistance();
     int calculatePackagesSent();
     int calculateRecoveryMinutes();
@@ -79,6 +80,37 @@ double Chromosome::fitness(int totalDist)
     double eqOne = (0.1 * totalDist * ((calculateTravelledDistance() + 0.01) / totalDist));
     fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(-1.1, calculateRecoveryMinutes()) + (10 / (1 + calculateWeightPenalty()));
     fitness = pow(20, fitness);
+}
+
+int Chromosome::calculateNotEnoughFoodPenalty()
+{
+    // calculate from 0 to first node
+    int penalty = 0;
+    int distance = choices[0].next.x + choices[0].next.y;
+    int requiredFood = distance / 10;
+    if (distance % 10 > 4)
+    {
+        requiredFood++;
+    }
+    if (choices[0].food < requiredFood)
+    {
+        penalty += requiredFood - choices[0].food;
+    }
+    // caculate for every subsequent node
+    for (int i = 1; i < choices.size(); i++)
+    {
+        distance = distanceInStep(i);
+        requiredFood = distance / 10;
+        if (distance % 10 > 4)
+        {
+            requiredFood++;
+        }
+        if (choices[i].food < requiredFood)
+        {
+            penalty += requiredFood - choices[i].food;
+        }
+    }
+    return penalty;
 }
 
 /**
@@ -153,7 +185,7 @@ int Chromosome::calculateWeightPenalty()
     int distance = choices[0].next.x - choices[0].next.y;
     for (int i = 0; i < distance; i += 10)
     {
-        weightPenalty += 1;
+        weightPenalty++;
     }
     // calculate for every subsequent node
     for (int i = 1; i < choices.size(); i++)
@@ -161,7 +193,7 @@ int Chromosome::calculateWeightPenalty()
         distance = distanceInStep(i);
         for (int i = 0; i < distance; i += 10)
         {
-            weightPenalty += 1;
+            weightPenalty++;
         }
     }
     return weightPenalty;
