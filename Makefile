@@ -5,7 +5,7 @@ main.o: *.cpp
 	g++ -c main.cpp
 
 run : main
-	./main input.txt output.txt
+	./main 1.txt output.txt
 
 check : main
 
