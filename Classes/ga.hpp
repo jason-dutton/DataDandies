@@ -14,7 +14,7 @@ const float MUTATION_RATE = 0.4;
 const float MUTATION_FOOD_RATE = 0.4;
 const float MUTATION_FOOD_STD = 0.4;
 const int POPULATION_SIZE = 100;
-const int MAX_GENERATIONS = 100;
+const int MAX_GENERATIONS = 1000;
 
 class Specimen
 {
@@ -36,7 +36,7 @@ public:
     int population_size;
     deque<Position> problem;
 
-    Population(int population_size = POPULATION_SIZE, deque<Position> problem);
+    Population(int population_size = POPULATION_SIZE, deque<Position> problem = deque<Position>());
 
     void cull(float survival_rate = SURVIVAL_RATE);
     void crossover(float crossover_rate = CROSSOVER_RATE);
