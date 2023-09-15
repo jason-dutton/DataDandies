@@ -54,7 +54,7 @@ Specimen::Specimen(Chromosome chromosome, float fitness)
 
 void Specimen::mutate(float mutation_rate, float mutation_food_rate, float mutation_food_std)
 {
-    srand(time(NULL));
+    srand(time(0));
 
     // randomly swap choices
     for (Choice choice : this->chromosome.choices)
@@ -124,7 +124,6 @@ Specimen Specimen::randomSpecimen(deque<Position> problem)
     //     chromosome.choices.push_back(choice);
     // }
 
-    srand(time(NULL));
 
     while (problem.size() > 0)
     {

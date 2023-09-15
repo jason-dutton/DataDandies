@@ -15,4 +15,4 @@ Variables: snake_case
 Functions: lowerCamelCase
 Classes: UpperCamelCase
 
-Indent: 2 spaces
+Indent: 4 spaces

@@ -94,9 +94,15 @@ int Chromosome::size()
 double Chromosome::fitness()
 {
     double fitness = 0;
-    double eqOne = (0.1 * totalDistance * ((calculateTravelledDistance() + 0.01) / totalDistance));
+    int dt = calculateTravelledDistance();
+    int ps = calculatePackagesSent();
+    int rt = calculateRecoveryMinutes();
+    float wp = calculateWeightPenalty();
+
+    
+    double eqOne = (0.1 * totalDistance * ((dt + 0.01) / totalDistance));
     // cout << "log EqOne: " << log(eqOne) << endl;
-    fitness = log(eqOne) + pow(0.8, calculatePackagesSent()) - pow(1.1, calculateRecoveryMinutes()) + (10.0 / (1 + calculateWeightPenalty()));
+    fitness = log(eqOne) + pow(0.8, ps) - pow(1.1, rt) + (10.0 / (1 + wp));
     // cout << "Fitness = " << fitness << " - log(eq): " << log(eqOne) << " packages :" << pow(0.8, calculatePackagesSent()) << " recovery: " << pow(1.1, calculateRecoveryMinutes()) << " weight: " << (10 / (1 + calculateWeightPenalty())) << endl;
     fitness = pow(20, fitness);
     // fitness -= calculateNotEnoughFoodPenalty();
@@ -219,6 +225,7 @@ int Chromosome::calculateWeightPenalty()
             weightPenalty += i / 10;
         }
     }
+    // cout << "Weight penalty: " << weightPenalty << endl;
     return weightPenalty;
 }
 
