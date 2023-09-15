@@ -9,13 +9,13 @@
 
 #include "utils.hpp"
 
-const float SURVIVAL_RATE = 0.4;
+const float SURVIVAL_RATE = 0.2;
 const float CROSSOVER_RATE = 0.4;
 const float MUTATION_RATE = 0.3;
-const float MUTATION_FOOD_RATE = 0.6;
+const float MUTATION_FOOD_RATE = 0.2;
 const float MUTATION_FOOD_STD = 1;
 const int POPULATION_SIZE = 1000;
-const int MAX_GENERATIONS = 100000;
+const int MAX_GENERATIONS = 1000;
 
 class Specimen
 {
@@ -94,8 +94,13 @@ float Specimen::getFitness()
     for (Choice &choice : this->chromosome.choices)
     {
         int distance = abs(choice.next.x - current_position.x) + abs(choice.next.y - current_position.y);
-        
+
         int food_needed = distance / 10;
+
+        if (distance % 10 > 4)
+        {
+            food_needed++;
+        }
 
         choice.food = food_needed;
 
